@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Interaktif: Animasi 2D Karakter Tanpa Wajah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Creative Neutral -->
+    <!-- Application Structure Plan: A single-page, vertical-scrolling application divided into thematic sections that guide the user through the animation creation process. The structure prioritizes user interaction and exploration over linear report reading. Key sections include an interactive software comparison, a visual character design blueprint, a tabbed interface for animation techniques (lip-sync, body language), and a toggle for export options. This design transforms the dense report into an engaging, step-by-step learning journey, enhancing comprehension of complex topics. -->
+    <!-- Visualization & Content Choices:
+        - Software Comparison: Report's table -> Goal: Compare -> Interactive Bar Chart (Chart.js) & Clickable Cards -> Interaction: Hover for chart details, click for card summary -> Justification: More dynamic and digestible than a static table, allows quick comparison and deep dives.
+        - Character Design Layering: Report's text -> Goal: Organize/Inform -> HTML/CSS Diagram -> Interaction: Static visual aid -> Justification: Clarifies the abstract concept of PSD layering for the faceless character rig.
+        - Animation Techniques: Report's text -> Goal: Inform/Engage -> Tabbed Interface -> Interaction: Click to switch between topics (Lip-Sync, Hand Gestures, Hair) -> Justification: Organizes related but distinct techniques, preventing cognitive overload.
+        - Hand Gestures: Report's concepts -> Goal: Inform -> Icon Gallery -> Interaction: Click to see description -> Justification: Makes the concept of expressive hands interactive and memorable.
+        - Export Methods: Report's text -> Goal: Compare -> Interactive Toggle Switch -> Interaction: Click to switch between Green Screen and Alpha Channel views -> Justification: Provides a direct, hands-on comparison of the two final output methods.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warm off-white */
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #0d9488; /* Teal-700 */
+            border-bottom-color: #0d9488;
+        }
+        .tab.active {
+            background-color: #0d9488;
+            color: #ffffff;
+        }
+        .card.selected {
+            border-color: #0d9488;
+            box-shadow: 0 4px 14px 0 rgba(13, 148, 136, 0.1);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-gray-800">Panduan Animasi</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 border-b-2 border-transparent">Pendahuluan</a>
+                        <a href="#software" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 border-b-2 border-transparent">Perangkat Lunak</a>
+                        <a href="#design" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 border-b-2 border-transparent">Desain</a>
+                        <a href="#animation" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 border-b-2 border-transparent">Animasi</a>
+                        <a href="#export" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 border-b-2 border-transparent">Ekspor</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="intro" class="text-center mb-16 md:mb-24 content-section active">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">Menganimasikan Kepribadian Tanpa Wajah</h2>
+            <p class="max-w-3xl mx-auto text-base md:text-lg text-gray-600">
+                Aplikasi ini mengubah laporan teknis tentang pembuatan animasi 2D menjadi panduan interaktif. Jelajahi cara menciptakan karakter "tanpa wajah" yang ekspresif, mulai dari pemilihan perangkat lunak hingga teknik animasi canggih, dan lihat bagaimana bahasa tubuh dapat menggantikan ekspresi wajah untuk menyampaikan cerita yang kuat.
+            </p>
+        </section>
+
+        <section id="software" class="mb-16 md:mb-24 content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">1. Memilih Perangkat Lunak yang Tepat</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600">
+                    Pemilihan alat yang tepat sangat penting untuk proyek dengan kebutuhan kustomisasi tinggi. Grafik di bawah ini membandingkan perangkat lunak berdasarkan kesesuaiannya untuk proyek "tanpa wajah" ini, sementara kartu interaktif memberikan ringkasan untuk setiap pilihan.
+                </p>
+            </div>
+            <div class="chart-container mb-12">
+                <canvas id="softwareChart"></canvas>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center" id="softwareCards">
+                <div class="card border-2 border-gray-200 p-6 rounded-lg cursor-pointer transition-all duration-300" data-software="cta">
+                    <h3 class="text-xl font-bold mb-2">Cartoon Animator</h3>
+                    <p class="text-gray-600">Sangat direkomendasikan untuk kustomisasi mendalam melalui impor PSD, rigging tulang yang kuat, dan kontrol manual lip-sync.</p>
+                </div>
+                <div class="card border-2 border-gray-200 p-6 rounded-lg cursor-pointer transition-all duration-300" data-software="cloud">
+                    <h3 class="text-xl font-bold mb-2">Animaker / Powtoon</h3>
+                    <p class="text-gray-600">Baik untuk video cepat, tetapi kustomisasi karakter terbatas dan kurang cocok untuk desain non-standar atau tanpa wajah.</p>
+                </div>
+                <div class="card border-2 border-gray-200 p-6 rounded-lg cursor-pointer transition-all duration-300" data-software="open">
+                    <h3 class="text-xl font-bold mb-2">Open Source (OpenToonz, dll.)</h3>
+                    <p class="text-gray-600">Sangat kuat dan gratis, tetapi memerlukan kurva belajar yang lebih curam dan lebih banyak upaya manual untuk rigging canggih.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="design" class="mb-16 md:mb-24 content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">2. Cetak Biru Karakter</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600">
+                    Menciptakan identitas tanpa wajah membutuhkan desain yang cerdas. Kunci utamanya adalah menggunakan elemen lain seperti rambut dan pakaian untuk membangun kepribadian, sambil secara teknis menyusun lapisan karakter untuk fungsionalitas.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-teal-700">Menyembunyikan Wajah dengan Rambut</h3>
+                        <p class="text-gray-600">Rambut panjang menjadi elemen desain utama untuk menutupi wajah. Ini secara alami memenuhi persyaratan "tanpa wajah" sambil menambahkan potensi gerakan dinamis (efek pegas) untuk membuat karakter lebih hidup.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-teal-700">Kaus Kustom 'riaview'</h3>
+                        <p class="text-gray-600">Teks ditambahkan langsung ke aset pakaian di editor gambar eksternal (seperti Photoshop) dan diimpor sebagai bagian dari karakter. Ini memastikan teks bergerak secara alami dengan tubuh karakter.</p>
+                    </div>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold mb-4 text-center">Struktur Lapisan Karakter (PSD)</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="bg-teal-100 p-3 rounded-md border border-teal-200 relative">
+                            <span class="font-semibold">Lapisan Atas:</span> Rambut (Menutupi Wajah)
+                            <div class="absolute top-1/2 -right-4 text-2xl text-teal-500">⬇️</div>
+                        </div>
+                        <div class="bg-orange-100 p-3 rounded-md border border-orange-200 relative">
+                            <span class="font-semibold">Lapisan Tengah:</span> Rig Mulut (Tersembunyi, untuk lip-sync)
+                            <div class="absolute top-1/2 -right-4 text-2xl text-orange-500">⬇️</div>
+                        </div>
+                         <div class="bg-gray-200 p-3 rounded-md border border-gray-300">
+                            <span class="font-semibold">Lapisan Dasar:</span> Tubuh & Kaus
+                        </div>
+                    </div>
+                    <p class="text-xs text-center mt-4 text-gray-500">Diagram ini mengilustrasikan bagaimana rambut menutupi rig mulut fungsional, yang berada di atas tubuh utama. Ini adalah kunci untuk karakter "tanpa wajah" yang dapat "berbicara".</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="animation" class="mb-16 md:mb-24 content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">3. Menghidupkan Karakter</h2>
+                 <p class="mt-4 max-w-2xl mx-auto text-gray-600">
+                    Tanpa ekspresi wajah, fokus animasi beralih ke bahasa tubuh. Gerakan mulut yang tersirat, gerakan tangan yang ekspresif, dan rambut yang dinamis menjadi alat utama untuk menyampaikan emosi dan narasi. Gunakan tab di bawah ini untuk menjelajahi setiap teknik.
+                </p>
+            </div>
+            
+            <div class="w-full max-w-3xl mx-auto">
+                <div class="flex border-b border-gray-300 mb-8" id="animationTabs">
+                    <button class="tab flex-1 py-3 px-4 text-gray-600 font-semibold transition-colors duration-300" data-tab="lipsync">Gerakan Mulut</button>
+                    <button class="tab flex-1 py-3 px-4 text-gray-600 font-semibold transition-colors duration-300" data-tab="hands">Gerakan Tangan</button>
+                    <button class="tab flex-1 py-3 px-4 text-gray-600 font-semibold transition-colors duration-300" data-tab="hair">Rambut Dinamis</button>
+                </div>
+
+                <div id="lipsyncContent" class="animation-content space-y-4">
+                    <h3 class="text-xl font-bold">Lip-Sync: Menyiratkan Ucapan</h3>
+                    <p class="text-gray-600">Tujuannya bukan akurasi fonetik yang sempurna, tetapi untuk menciptakan gerakan mulut yang halus dan berirama yang secara visual mengkonfirmasi bahwa karakter sedang berbicara. Sistem berbasis sprite sangat ideal, di mana bentuk mulut yang disederhanakan (viseme) dianimasikan di bawah rambut untuk menyiratkan dialog.</p>
+                </div>
+
+                <div id="handsContent" class="animation-content hidden space-y-4">
+                     <h3 class="text-xl font-bold">Gerakan Tangan: Wajah Komunikasi yang Baru</h3>
+                    <p class="text-gray-600">Tangan menjadi saluran utama untuk emosi dan penekanan. Gerakan yang dirancang dengan baik dapat menjelaskan, menekankan, dan mengekspresikan kepribadian. Klik ikon di bawah untuk melihat makna potensialnya.</p>
+                    <div class="flex justify-center space-x-4 pt-4" id="handGestureGallery">
+                        <span class="text-4xl cursor-pointer" data-desc="Telapak tangan terbuka untuk menjelaskan atau menunjukkan keterbukaan.">🖐️</span>
+                        <span class="text-4xl cursor-pointer" data-desc="Menunjuk untuk memberikan penekanan pada suatu poin atau ide.">👉</span>
+                        <span class="text-4xl cursor-pointer" data-desc="Gerakan mencubit untuk menyoroti detail kecil atau presisi.">🤏</span>
+                        <span class="text-4xl cursor-pointer" data-desc="Jempol ke atas untuk menunjukkan persetujuan atau hal positif.">👍</span>
+                    </div>
+                    <p id="handDesc" class="text-center text-teal-800 bg-teal-50 rounded-md p-3 min-h-[50px] transition-opacity duration-300 opacity-0"></p>
+                </div>
+
+                <div id="hairContent" class="animation-content hidden space-y-4">
+                    <h3 class="text-xl font-bold">Rambut Dinamis: Menambah Kehidupan</h3>
+                    <p class="text-gray-600">Menerapkan efek fisika seperti "efek pegas" pada rambut karakter dapat secara signifikan meningkatkan dinamisme. Rambut akan bereaksi secara alami terhadap gerakan kepala dan tubuh, membuatnya terasa lebih hidup dan organik, serta menarik perhatian dari wajah yang tersembunyi.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="export" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">4. Ekspor & Hasil Akhir</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600">
+                    Mengekspor animasi Anda dengan benar sangat penting untuk integrasi pascaproduksi. Pilihan antara layar hijau dan kanal alfa (*alpha channel*) bergantung pada alur kerja dan hasil yang diinginkan. Gunakan *toggle* di bawah untuk membandingkan kedua metode tersebut.
+                </p>
+            </div>
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                <div class="flex justify-center items-center mb-6">
+                    <span class="font-medium mr-3">Layar Hijau</span>
+                    <label for="exportToggle" class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" id="exportToggle" class="sr-only peer">
+                        <div class="w-14 h-7 bg-green-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                    </label>
+                    <span class="font-medium ml-3">Kanal Alfa (Transparan)</span>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div id="exportGreenScreen">
+                        <h3 class="font-bold text-lg mb-2">Metode: Layar Hijau (Chroma Key)</h3>
+                        <div class="w-full h-48 bg-green-500 rounded-lg flex items-center justify-center">
+                             <p class="text-white font-bold text-xl">KARAKTER DI SINI</p>
+                        </div>
+                        <p class="text-sm mt-2 text-gray-600"><strong>Pro:</strong> Kompatibilitas universal dengan semua editor video. <br><strong>Kontra:</strong> Memerlukan langkah *keying* tambahan dan dapat meninggalkan "tumpahan hijau" di sekitar tepi karakter.</p>
+                    </div>
+                     <div id="exportAlpha" class="hidden">
+                        <h3 class="font-bold text-lg mb-2">Metode: Kanal Alfa (Transparan)</h3>
+                        <div class="w-full h-48 bg-gray-400 bg-cover rounded-lg flex items-center justify-center" style="background-image: repeating-conic-gradient(#FFF 0% 25%, #DDD 0% 50%) ; background-size: 20px 20px;">
+                             <p class="text-gray-800 font-bold text-xl">KARAKTER DI SINI</p>
+                        </div>
+                        <p class="text-sm mt-2 text-gray-600"><strong>Pro:</strong> Menghasilkan komposit yang lebih bersih tanpa perlu *keying*. Kualitas tertinggi. <br><strong>Kontra:</strong> Mungkin menghasilkan ukuran file yang lebih besar dan memerlukan format video tertentu (misalnya, MOV, popVideo3).</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg self-start">
+                        <h4 class="font-bold mb-2">Checklist Ekspor Akhir:</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                            <li><strong class="font-semibold">Resolusi:</strong> 1080p (1920x1080) untuk kualitas HD standar.</li>
+                            <li><strong class="font-semibold">Format:</strong> MP4 untuk kompatibilitas luas, atau MOV untuk kanal alfa.</li>
+                            <li><strong class="font-semibold">Latar Belakang:</strong> Pastikan warna hijau tidak ada pada karakter jika menggunakan layar hijau.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm">
+            <p>&copy; 2025 Panduan Animasi Interaktif. Diadaptasi dari laporan teknis.</p>
+        </div>
+    </footer>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const chartData = {
+        labels: ['Kustomisasi Karakter', 'Kontrol Lip-Sync', 'Animasi Tangan', 'Kemudahan Penggunaan'],
+        datasets: [
+            {
+                label: 'Cartoon Animator',
+                data: [9, 8, 9, 7],
+                backgroundColor: 'rgba(13, 148, 136, 0.6)',
+                borderColor: 'rgba(13, 148, 136, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Animaker / Powtoon',
+                data: [4, 6, 5, 9],
+                backgroundColor: 'rgba(249, 115, 22, 0.6)',
+                borderColor: 'rgba(249, 115, 22, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Open Source',
+                data: [7, 4, 6, 4],
+                backgroundColor: 'rgba(107, 114, 128, 0.6)',
+                borderColor: 'rgba(107, 114, 128, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const chartConfig = {
+        type: 'bar',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 10,
+                    title: {
+                        display: true,
+                        text: 'Skor Kesesuaian (1-10)'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Perbandingan Fitur Perangkat Lunak untuk Proyek Ini',
+                    font: { size: 16 }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.x !== null) {
+                                label += context.parsed.x + ' / 10';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    const softwareChartCtx = document.getElementById('softwareChart').getContext('2d');
+    new Chart(softwareChartCtx, chartConfig);
+
+    const softwareCards = document.querySelectorAll('#softwareCards .card');
+    softwareCards.forEach(card => {
+        card.addEventListener('click', () => {
+            softwareCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+        });
+    });
+    document.querySelector('[data-software="cta"]').classList.add('selected');
+
+    const animationTabs = document.querySelectorAll('#animationTabs .tab');
+    const animationContents = document.querySelectorAll('.animation-content');
+    animationTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabName = tab.dataset.tab;
+
+            animationTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            animationContents.forEach(content => {
+                content.classList.add('hidden');
+                if (content.id === `${tabName}Content`) {
+                    content.classList.remove('hidden');
+                }
+            });
+        });
+    });
+    document.querySelector('#animationTabs .tab').classList.add('active');
+
+    const handGestures = document.querySelectorAll('#handGestureGallery span');
+    const handDesc = document.getElementById('handDesc');
+    handGestures.forEach(gesture => {
+        gesture.addEventListener('click', () => {
+            const desc = gesture.dataset.desc;
+            handDesc.textContent = desc;
+            handDesc.classList.remove('opacity-0');
+        });
+    });
+
+    const exportToggle = document.getElementById('exportToggle');
+    const greenScreenView = document.getElementById('exportGreenScreen');
+    const alphaView = document.getElementById('exportAlpha');
+
+    exportToggle.addEventListener('change', (e) => {
+        if (e.target.checked) {
+            greenScreenView.classList.add('hidden');
+            alphaView.classList.remove('hidden');
+        } else {
+            greenScreenView.classList.remove('hidden');
+            alphaView.classList.add('hidden');
+        }
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.content-section');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === entry.target.id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, { rootMargin: "-50% 0px -50% 0px" });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = e.target.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            // Show all sections briefly to calculate position correctly
+            sections.forEach(s => s.style.display = 'block');
+            
+            const offsetTop = targetSection.offsetTop - 70; // Header height
+            
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
+
+            // Hide sections again and show only the target one
+            sections.forEach(s => {
+                if (s.id !== targetId.substring(1)) {
+                     s.classList.remove('active');
+                } else {
+                     s.classList.add('active');
+                }
+            });
+            // A bit of a hack to reset the display property after calculation
+            setTimeout(() => {
+                 sections.forEach(s => s.style.display = '');
+                 document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                 targetSection.classList.add('active');
+            }, 0);
+
+
+        });
+    });
+    
+    // Initial load
+    const initialHash = window.location.hash || '#intro';
+    const initialSection = document.querySelector(initialHash);
+    if (initialSection) {
+        sections.forEach(s => s.classList.remove('active'));
+        initialSection.classList.add('active');
+    }
+});
+</script>
+
+</body>
+</html>

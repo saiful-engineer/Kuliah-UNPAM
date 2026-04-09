@@ -1,0 +1,6 @@
+LAPORAN DATA NILAI SISWA
+--------------------------
+Andi; 92; LULUS
+Budi; 85; LULUS
+Rina; 70; LULUS
+Sari; 68; TIDAK LULUS
