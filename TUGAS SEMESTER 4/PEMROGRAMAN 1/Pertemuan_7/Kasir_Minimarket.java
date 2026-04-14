@@ -1,8 +1,3 @@
-
-//NAMA  : SAIFUL BAHRI
-//NIM   : 241011400864
-//KELAS : 04TPLP022
-
 import java.util.Scanner;
 
 public class Kasir_Minimarket {
