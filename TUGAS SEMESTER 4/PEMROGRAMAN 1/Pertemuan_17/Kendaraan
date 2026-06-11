@@ -1,0 +1,70 @@
+// 1. Abstract class Kendaraan (Sudah dikembalikan ke nama aslinya)
+abstract class Kendaraan {
+    // Atribut
+    protected String merk;
+    protected int tahun;
+    
+    // Constructor
+    public Kendaraan(String merk, int tahun) {
+        this.merk = merk;
+        this.tahun = tahun;
+    }
+    
+    // Method abstract wajib di-override child class
+    public abstract void start();
+    
+    // Method biasa boleh ada
+    public void info() {
+        System.out.println("Merk: " + merk + ", Tahun: " + tahun);
+    }
+}
+
+// 2. Interface Elektronik
+interface Elektronik {
+    int BATERAI = 100; 
+    
+    // Method abstract
+    void chargeBaterai();
+    void bateraiLevel();
+}
+
+// 3. Class SepedaListrik extends Kendaraan
+class SepedaListrik extends Kendaraan implements Elektronik {
+    private int levelBaterai;
+    
+    public SepedaListrik(String merk, int tahun) {
+        super(merk, tahun); // panggil constructor parent (Kendaraan)
+        this.levelBaterai = 50; // default 50%
+    }
+    
+    @Override
+    public void start() {
+        if (levelBaterai > 0) {
+            System.out.println("Sepeda listrik " + merk + " dinyalakan...");
+        } else {
+            System.out.println("Baterai habis, tidak bisa start");
+        }
+    }
+    
+    @Override
+    public void chargeBaterai() {
+        levelBaterai = BATERAI; // memakai konstanta BATERAI
+        System.out.println("Baterai sedang di-charge... Full 100%");
+    }
+    
+    @Override
+    public void bateraiLevel() {
+        System.out.println("Level baterai: " + levelBaterai + "%");
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        SepedaListrik sp = new SepedaListrik("Polygon", 2024);
+        sp.info();
+        sp.start();
+        sp.bateraiLevel();
+        sp.chargeBaterai();
+        sp.bateraiLevel();
+    }
+}
