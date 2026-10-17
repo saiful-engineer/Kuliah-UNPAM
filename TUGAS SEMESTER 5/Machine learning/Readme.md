@@ -1,6 +1,7 @@
 # Laporan Praktikum Machine Learning
 
 Repositori ini berisi implementasi alur kerja (workflow) *Machine Learning* secara komprehensif menggunakan bahasa pemrograman Python dan pustaka Scikit-Learn,dan lainnya.
+
 **Penulis:** SAIFUL BAHRI   
 **Kelas:** 05TPLP022  
 
